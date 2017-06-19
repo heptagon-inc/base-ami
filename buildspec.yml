@@ -9,7 +9,7 @@ phases:
   pre_build:
     commands:
       - echo 'pre_build.'
-      - apk add jq
+      - apk add jq awscli
       - packer validate template.json
   build:
     commands:
