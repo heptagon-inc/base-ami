@@ -10,7 +10,7 @@ phases:
     commands:
       - echo 'pre_build.'
       - echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-      - apk add jq aws-cli py-paramiko ansible --update
+      - apk add jq aws-cli --update
       - packer validate template.json
   build:
     commands:
