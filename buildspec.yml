@@ -5,6 +5,7 @@ phases:
   pre_build:
     commands:
       - echo 'pre_build.'
+      - packer validate template.json
   build:
     commands:
       - echo 'build'
