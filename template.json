@@ -3,8 +3,7 @@
     "aws_instance_type": "t2.micro",
     "aws_region": "ap-northeast-1",
     "aws_amazon_linux_release_version": "2017.03",
-    "ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDopDYvoAitNj43qNK1QLHMDm5DgkOoWwVXuSiBwJ306I1GWf+4plvMYgmo6eq1Wc5DbsVu6AN6N78FuwiX+zsWfe4oVIQUlL2JkWZenZEA/x04Y24FWC1AAFpiC9dfBjbg39xn3jVY9mIOeHhxozQLCMgEIuPt/iWz6mCNlRsUgSTVwvKv1GEThNjDInq8cziU0CmCbyrdH/MRAX+kCntx+zGiQUwECapenalDaHAAMpqGPEFZnqslzzP3guLhClSLyqhTGeig+tqKw0zZDGtnzqpMy2Ulv82HqCOKCeQnvgo+gIWCsNssTbvp4e70XOsEhfukATg6UcomGCo948bR",
-    "image_name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}"
+    "ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDopDYvoAitNj43qNK1QLHMDm5DgkOoWwVXuSiBwJ306I1GWf+4plvMYgmo6eq1Wc5DbsVu6AN6N78FuwiX+zsWfe4oVIQUlL2JkWZenZEA/x04Y24FWC1AAFpiC9dfBjbg39xn3jVY9mIOeHhxozQLCMgEIuPt/iWz6mCNlRsUgSTVwvKv1GEThNjDInq8cziU0CmCbyrdH/MRAX+kCntx+zGiQUwECapenalDaHAAMpqGPEFZnqslzzP3guLhClSLyqhTGeig+tqKw0zZDGtnzqpMy2Ulv82HqCOKCeQnvgo+gIWCsNssTbvp4e70XOsEhfukATg6UcomGCo948bR"
   },
   "builders": [
     {
@@ -12,7 +11,7 @@
       "region": "{{user `aws_region`}}",
       "instance_type": "{{user `aws_instance_type`}}",
       "ssh_username": "ec2-user",
-      "ami_name": "{{user `image_name`}}",
+      "ami_name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}",
       "ami_description": "Customized Amazon Linux",
       "associate_public_ip_address": "true",
       "source_ami_filter": {
@@ -34,7 +33,7 @@
         "most_recent": true
       },
       "tags": {
-        "Name": "{{user `image_name`}}"
+        "Name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}"
       }
     }
   ],
