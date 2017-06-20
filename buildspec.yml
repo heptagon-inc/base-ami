@@ -4,9 +4,6 @@ version: 0.2
 env:
   variables:
     USER: root
-    #ANSIBLE_TRANSPORT: ssh
-    #ANSIBLE_SSH_ARGS: ""
-    #ANSIBLE_SCP_IF_SSH: true
 
 phases:
   pre_build:
@@ -27,3 +24,4 @@ phases:
   post_build:
     commands:
       - echo 'post_build'
+      - aws ec2 modify-image-attribute --image-id `aws ec2 describe-images --owners self | jq -r '.Images | sort_by(.CreationDate) | reverse | .[0].ImageId'` --launch-permission "{\"Add\":[{\"Group\":\"all\"}]}"
