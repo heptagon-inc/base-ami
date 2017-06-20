@@ -7,10 +7,9 @@
     - name: Enable epel-release
       shell: yum-config-manager --enable epel
     - name: Check swapfile
-      shell: ls /swapfile1
+      stat:
+        path: /swapfile1
       register: check_swapfile_result
-      changed_when: false
-      check_mode: no
     - name: Create swapfile
       shell: |
         dd if=/dev/zero of=/swapfile1 bs=1M count=2048
