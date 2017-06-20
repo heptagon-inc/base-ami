@@ -10,6 +10,8 @@
       "type": "amazon-ebs",
       "region": "{{user `aws_region`}}",
       "instance_type": "{{user `aws_instance_type`}}",
+	  "spot_price": "auto",
+	  "spot_price_auto_product": "Linux/UNIX (Amazon VPC)",
       "ssh_username": "ec2-user",
       "ami_name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}",
       "ami_description": "Customized Amazon Linux",
