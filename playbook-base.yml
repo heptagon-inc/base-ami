@@ -59,7 +59,7 @@
       yum: name=sendmail state=absent
     - name: Install useful packages
       yum:
-        name={{ pkg }} state=latest
+        name={{ item }} state=latest
       with_items:
         - 'bash-completion'
         - 'vim'
