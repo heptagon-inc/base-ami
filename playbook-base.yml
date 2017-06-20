@@ -35,6 +35,8 @@
         - 'iptables'
         - 'ip6tables'
         - 'netfs'
+        - 'rpcbind'
+        - 'nfslock'
     - name: Set kernel parameters
       lineinfile:
         dest=/etc/sysctl.conf
