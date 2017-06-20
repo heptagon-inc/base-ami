@@ -73,6 +73,7 @@
         group=heptagon-user
         mode=0600
         state=present
+        create=yes
     - name: Add sudo user
       lineinfile:
         dest=/etc/sudoers
