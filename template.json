@@ -40,6 +40,8 @@
   "provisioners": [
     {
       "type": "ansible",
+	  "user": "ec2-user",
+	  "sftp_command" : "/usr/libexec/openssh/sftp-server -e",
       "playbook_file": "playbook-base.yml"
     }
   ]

@@ -4,9 +4,9 @@ version: 0.2
 env:
   variables:
     USER: root
-    ANSIBLE_TRANSPORT: ssh
-    ANSIBLE_SSH_ARGS: ""
-    ANSIBLE_SCP_IF_SSH: true
+    #ANSIBLE_TRANSPORT: ssh
+    #ANSIBLE_SSH_ARGS: ""
+    #ANSIBLE_SCP_IF_SSH: true
 
 phases:
   pre_build:
