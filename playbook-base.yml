@@ -6,23 +6,48 @@
       yum: name=* state=latest
     - name: Enable epel-release
       shell: yum-config-manager --enable epel
+    - name: Check swapfile
+      shell: ls /swapfile1
+      register: check_swapfile_result
+      changed_when: false
+      check_mode: no
     - name: Create swapfile
       shell: |
         dd if=/dev/zero of=/swapfile1 bs=1M count=2048
-        chmod 600 /swapfile1
+      when: check_swapfile_result.rc != 0
+    - name: Set permission to swapfile
+      file:
+        path=/swapfile1
+        state=file
+        owner=root
+        group=root
+        mode=0600
+        follow=yes
+    - name: Check swapfile
+      shell: file /swapfile1 |grep -qw swap
+      register: check_swapfile
+      changed_when: false
+      check_mode: no
+    - name: Create swap
+      shell: |
         mkswap /swapfile1
         swapon /swapfile1
-        echo -e "/swapfile1\tswap\tswap\tdefaults\t0 0" >> /etc/fstab
+      when: check_swapfile.rc != 0
+    - name: Add swap information to fstab
+      lineinfile:
+        dest=/etc/fstab
+        line='/swapfile1 swap swap defaults 0 0'
     - name: Set timezone
       shell: |
         /bin/cp -a /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
         echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock
         echo 'UTC=False' >> /etc/sysconfig/clock
     - name: Disable unused daemons
-      shell: |
-        chkconfig iptables off
-        chkconfig ip6tables off
-        chkconfig netfs off
+      service: name={{ item }} enabled=false
+      with_items:
+        - 'iptables'
+        - 'ip6tables'
+        - 'netfs'
     - name: Set kernel parameters
       lineinfile:
         dest=/etc/sysctl.conf
@@ -43,14 +68,28 @@
         - 'net.core.netdev_max_backlog = 10240'
         - 'net.nf_conntrack_max = 1053616'
     - name: Create user
-      shell: |
-        useradd heptagon-user
-        mkdir /home/heptagon-user/.ssh
-        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDopDYvoAitNj43qNK1QLHMDm5DgkOoWwVXuSiBwJ306I1GWf+4plvMYgmo6eq1Wc5DbsVu6AN6N78FuwiX+zsWfe4oVIQUlL2JkWZenZEA/x04Y24FWC1AAFpiC9dfBjbg39xn3jVY9mIOeHhxozQLCMgEIuPt/iWz6mCNlRsUgSTVwvKv1GEThNjDInq8cziU0CmCbyrdH/MRAX+kCntx+zGiQUwECapenalDaHAAMpqGPEFZnqslzzP3guLhClSLyqhTGeig+tqKw0zZDGtnzqpMy2Ulv82HqCOKCeQnvgo+gIWCsNssTbvp4e70XOsEhfukATg6UcomGCo948bR" > /home/heptagon-user/.ssh/authorized_keys
-        chown -R heptagon-user: /home/heptagon-user/
-        chmod 700 /home/heptagon-user/.ssh
-        chmod 600 /home/heptagon-user/.ssh/authorized_keys
-        echo -e "heptagon-user\tALL=(ALL)\tNOPASSWD:ALL" >> /etc/sudoers
+      user:
+        name=heptagon-user
+        state=present
+    - name: Create ssh directory
+      file:
+        path=/home/heptagon-user/.ssh
+        state=directory
+        owner=heptagon-user
+        group=heptagon-user
+        mode=0700
+    - name: Create public-key
+      lineinfile:
+        dest=/home/heptagon-user/.ssh/authorized_keys
+        line='ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDopDYvoAitNj43qNK1QLHMDm5DgkOoWwVXuSiBwJ306I1GWf+4plvMYgmo6eq1Wc5DbsVu6AN6N78FuwiX+zsWfe4oVIQUlL2JkWZenZEA/x04Y24FWC1AAFpiC9dfBjbg39xn3jVY9mIOeHhxozQLCMgEIuPt/iWz6mCNlRsUgSTVwvKv1GEThNjDInq8cziU0CmCbyrdH/MRAX+kCntx+zGiQUwECapenalDaHAAMpqGPEFZnqslzzP3guLhClSLyqhTGeig+tqKw0zZDGtnzqpMy2Ulv82HqCOKCeQnvgo+gIWCsNssTbvp4e70XOsEhfukATg6UcomGCo948bR'
+        owner=heptagon-user
+        group=heptagon-user
+        mode=0600
+        state=present
+    - name: Add sudo user
+      lineinfile:
+        dest=/etc/sudoers
+        line='heptagon-user ALL=(ALL) NOPASSWD:ALL'
     - name: Install postfix
       yum: name=postfix state=latest
     - name: Enable postfix
@@ -71,7 +110,6 @@
     - name: Modify ssh port
       lineinfile:
         dest=/etc/ssh/sshd_config
-        regexp='#Port'
         line='Port 10022'
     - name: Modify sshd config
       lineinfile:
