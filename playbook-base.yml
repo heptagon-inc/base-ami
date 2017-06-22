@@ -126,6 +126,7 @@
         - 'zabbix-agent'
         - 'zabbix-sender'
         - 'zabbix-get'
+    - file: path=/var/lib/zabbix state=directory owner=zabbix group=zabbix mode=0700
     - name: Copy config file
       copy:
         src: templates/zabbix_agentd.conf
