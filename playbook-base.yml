@@ -24,6 +24,14 @@
       lineinfile:
         dest=/etc/fstab
         line='/swapfile1 swap swap defaults 0 0'
+    - name: Set history timestamp
+      lineinfile:
+        dest=/etc/profile.d/history.sh
+        line="export HISTTIMEFORMAT='%Y-%m-%dT%T%z '"
+        owner=root
+        group=root
+        mode=0644
+        create=yes
     - name: Set timezone
       shell: |
         /bin/cp -a /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
