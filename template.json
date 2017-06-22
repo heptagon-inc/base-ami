@@ -11,7 +11,7 @@
       "region": "{{user `aws_region`}}",
       "instance_type": "{{user `aws_instance_type`}}",
       "ssh_username": "ec2-user",
-      "ami_name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}",
+      "ami_name": "Cloud3rsio_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}",
       "ami_description": "Customized Amazon Linux",
       "associate_public_ip_address": "true",
       "source_ami_filter": {
@@ -33,7 +33,7 @@
         "most_recent": true
       },
       "tags": {
-        "Name": "Heptagon_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}"
+        "Name": "Cloud3rsio_Base_AMI_{{user `aws_amazon_linux_release_version`}}_{{timestamp}}"
       }
     }
   ],
