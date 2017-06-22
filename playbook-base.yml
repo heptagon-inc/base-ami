@@ -66,28 +66,28 @@
         - 'net.nf_conntrack_max = 1053616'
     - name: Create user
       user:
-        name=heptagon-user
+        name=ops-user
         state=present
     - name: Create ssh directory
       file:
-        path=/home/heptagon-user/.ssh
+        path=/home/ops-user/.ssh
         state=directory
-        owner=heptagon-user
-        group=heptagon-user
+        owner=ops-user
+        group=ops-user
         mode=0700
     - name: Create public-key
       lineinfile:
-        dest=/home/heptagon-user/.ssh/authorized_keys
+        dest=/home/ops-user/.ssh/authorized_keys
         line='ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDopDYvoAitNj43qNK1QLHMDm5DgkOoWwVXuSiBwJ306I1GWf+4plvMYgmo6eq1Wc5DbsVu6AN6N78FuwiX+zsWfe4oVIQUlL2JkWZenZEA/x04Y24FWC1AAFpiC9dfBjbg39xn3jVY9mIOeHhxozQLCMgEIuPt/iWz6mCNlRsUgSTVwvKv1GEThNjDInq8cziU0CmCbyrdH/MRAX+kCntx+zGiQUwECapenalDaHAAMpqGPEFZnqslzzP3guLhClSLyqhTGeig+tqKw0zZDGtnzqpMy2Ulv82HqCOKCeQnvgo+gIWCsNssTbvp4e70XOsEhfukATg6UcomGCo948bR'
-        owner=heptagon-user
-        group=heptagon-user
+        owner=ops-user
+        group=ops-user
         mode=0600
         state=present
         create=yes
     - name: Add sudo user
       lineinfile:
         dest=/etc/sudoers
-        line='heptagon-user ALL=(ALL) NOPASSWD:ALL'
+        line='ops-user ALL=(ALL) NOPASSWD:ALL'
     - name: Install postfix
       yum: name=postfix state=latest
     - name: Enable postfix
